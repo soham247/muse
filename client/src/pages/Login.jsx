@@ -32,9 +32,7 @@ function Login() {
                 }, {withCredentials: true}
             )
             if(response.status === 200) {
-                dispatch(login(response.data?.data.user))
-                console.log(response.data?.data.user);
-                
+                dispatch(login(response.data?.data.user))                
                 toast.success('Login successful')
                 navigate('/home')
             }

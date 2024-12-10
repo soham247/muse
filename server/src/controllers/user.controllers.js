@@ -86,15 +86,15 @@ const loginUser = asyncHandler( async (req, res) => {
 
     const accessOptions = {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
+        secure: true,
+        sameSite: "none",
         maxAge: parseInt(process.env.ACCESS_TOKEN_EXPIRY)
     }
 
     const refreshOptions = {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
+        secure: true,
+        sameSite: "none",
         maxAge: parseInt(process.env.REFRESH_TOKEN_EXPIRY)
     }
 
