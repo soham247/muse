@@ -42,8 +42,8 @@ function Login() {
     }
 
     return (
-        <div className='h-screen flex justify-center items-center bg-slate-100'>
-            <form className='flex flex-col w-screen md:w-1/2 lg:w-1/3 px-3 py-5 shadow-md bg-white'
+        <div className='h-screen flex justify-center items-center bg-[#1C1B1F] text-white'>
+            <form className='flex flex-col w-screen md:w-1/2 lg:w-1/3 px-3 py-5 bg-black/10 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] backdrop-blur-sm rounded-xl'
             onSubmit={handleSubmit}
             >
                 <h2 className="text-center text-2xl font-bold leading-tight my-5">Sign in to your account</h2>
@@ -54,7 +54,7 @@ function Login() {
                 id="email" 
                 name="email"
                 placeholder='Email'
-                className='py-2 px-4 mt-1 mb-4 border rounded-md focus:outline-none focus:ring-1'
+                className='py-2 px-4 mt-1 mb-4 border rounded-md focus:outline-none focus:ring-1 bg-transparent'
                 required
                 value={inputs.email}
                 onChange={handleChange}
@@ -66,13 +66,13 @@ function Login() {
                 id="password" 
                 name='password'
                 placeholder='Password' 
-                className='py-2 px-4 mt-1 mb-4 border rounded-md focus:outline-none focus:ring-1'
+                className='py-2 px-4 mt-1 mb-4 border rounded-md focus:outline-none focus:ring-1 bg-transparent'
                 required
                 value={inputs.password}
                 onChange={handleChange}
                 />
 
-                <p className="text-center my-3 text-base text-black/60">
+                <p className="text-center my-3 text-base">
                     Don&apos;t have any account?&nbsp;
                     <Link
                         to="/signup"

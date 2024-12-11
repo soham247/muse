@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
-import Navbar from '../components/Navbar'
 
 function Home() {
     const [blogs, setBlogs] = useState([])
@@ -27,7 +26,6 @@ function Home() {
 
     return (
         <div>
-            <Navbar />
             <div className='w-[80%] mx-auto grid grid-cols-1 md:grid-cols-2 gap-4'>
                 { blogs? 
                  blogs.map((blog) => (

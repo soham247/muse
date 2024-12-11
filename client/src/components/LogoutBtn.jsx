@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { logout } from '../redux/store'
 import { useDispatch } from 'react-redux'
 import toast from 'react-hot-toast'
+import { LogOut } from 'lucide-react'
 
 function LogoutBtn() {
     const navigate = useNavigate()
@@ -18,17 +19,19 @@ function LogoutBtn() {
             if(response.status === 200) {
                 dispatch(logout())
                 toast.success('Logout successful')
-                navigate('/')
+                navigate('/', {replace: true})
             }
         } catch (error) {
             toast.error('Logout failed')
         }
     }
     return (
-        <button 
-        className='bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700'
-        onClick={logoutUser}
-        >Logout</button>
+        
+        <button className='flex items-center gap-2 text-red-600' onClick={logoutUser}>
+            <span>Logout</span>
+            <LogOut size={20} />
+        </button>
+        
     )
 }
 

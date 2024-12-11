@@ -16,3 +16,8 @@
 ::-webkit-scrollbar-track {
     background: transparent;
 }
+
+body {
+    @apply font-poppins;
+    @apply bg-[#1C1B1F] text-white
+}

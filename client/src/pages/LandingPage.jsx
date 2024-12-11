@@ -1,17 +1,22 @@
 import React from 'react'
-import Navbar from '../components/Navbar.jsx'
 import Footer from '../components/Footer.jsx'
-
+import { Link } from 'react-router-dom'
+import { LogIn } from 'lucide-react'
 
 function LandingPage() {
 
     return (
         <div>
-            <Navbar />
             <div>
-                <div className='bg-cover bg-center text-center mt-5'>
-                    <h1 className="text-4xl md:text-6xl font-bold mb-4">Welcome to Your Blog</h1>
-                    <p className="text-lg md:text-xl mb-6">Explore ideas, share thoughts, and learn together!</p>
+                <div className="text-center mt-5 min-h-[70vh] md:min-h-[50vh] lg:min-h-[80vh] flex flex-col justify-center items-center">
+                    <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent animate-gradient">
+                        Welcome to Muse
+                    </h1>
+                    <p className="text-lg lg:text-xl mt-6 text-white max-w-[70%] mx-auto">
+                        Explore ideas, share thoughts, and learn together.
+                    </p>
+
+                    <Link to='/signup' className="mt-8 px-6 py-3 bg-blue-600 text-white rounded-2xl shadow-lg inset-shadow-sm inset-shadow-white/20 hover:bg-blue-700 duration-300 flex"><span className='mr-2'>Get Started</span><LogIn /></Link>
                 </div>
                 <section className='sm:flex sm:justify-around items-center py-5 text-center'>
                     <h2 className='text-3xl font-bold'>Find Blogs You Love.</h2>
@@ -36,7 +41,7 @@ function LandingPage() {
                         </div>
                     </div>
                 </section>
-                <section className="py-16 bg-gray-100 text-center">
+                <section className="py-16text-center">
                     <h2 className="text-3xl font-bold mb-8">Why Choose Us?</h2>
                     <div className="flex flex-wrap justify-center gap-8 px-4 max-w-6xl mx-auto">
                         <div className="p-6 bg-white rounded-lg shadow-md">

@@ -1,21 +1,26 @@
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
-import {createBrowserRouter, RouterProvider} from 'react-router-dom'
-import Login from './pages/Login.jsx'
-import SignUp from './pages/SignUp.jsx'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { ErrorBoundary } from 'react-error-boundary'
-import Error404 from './components/errors/Error404.jsx'
-import SomethingWentWrong from './components/errors/SomethingWentWrong.jsx'
-import LandingPage from './pages/LandingPage.jsx'
-import Home from './pages/Home.jsx'
 import { store } from './redux/store.js'
 import { Provider } from 'react-redux'
-import Blog from './components/blog/Blog.jsx'
-import Profile from './pages/Profile.jsx'
-import CreateBlog from './components/blog/CreateBlog.jsx'
-import UpdateBlog from './components/blog/UpdateBlog.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
+
+import { lazy } from 'react'
+
+const Login = lazy(() => import('./pages/Login.jsx'))
+const SignUp = lazy(() => import('./pages/SignUp.jsx'))
+const LandingPage = lazy(() => import('./pages/LandingPage.jsx'))
+const Home = lazy(() => import('./pages/Home.jsx'))
+const Blog = lazy(() => import('./components/blog/Blog.jsx'))
+const Profile = lazy(() => import('./pages/Profile.jsx'))
+const CreateBlog = lazy(() => import('./components/blog/CreateBlog.jsx'))
+const UpdateBlog = lazy(() => import('./components/blog/UpdateBlog.jsx'))
+const Error404 = lazy(() => import('./components/errors/Error404.jsx'))
+const SomethingWentWrong = lazy(() =>
+  import('./components/errors/SomethingWentWrong.jsx')
+)
 
 const router = createBrowserRouter([
   {

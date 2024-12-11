@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Navbar from '../Navbar'
 import toast from 'react-hot-toast'
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -67,7 +66,6 @@ function UpdateBlog() {
 
     return (
         <div>
-            <Navbar />
             <form onSubmit={handleSubmit} className='w-[80%] mx-auto flex flex-col gap-4 mt-5'>
                 <input 
                 className='py-2 px-4 mt-1 mb-4 border rounded-md focus:outline-none focus:ring-1'

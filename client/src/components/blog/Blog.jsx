@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
-import Navbar from '../Navbar'
 
 
 function Blog() {
@@ -30,7 +29,6 @@ function Blog() {
 
     return (
         <div>
-            <Navbar />
             <div className='text-center mt-5'>
                 <h1 className='text-3xl font-bold'>{blog.title}</h1>
                 <p className='py-2'>Author: <Link to={`/profile/${blog.author?._id}`} className='text-blue-500'>{blog.author?.fullname}</Link></p>
