@@ -6,6 +6,8 @@ import { ErrorBoundary } from 'react-error-boundary'
 import { store } from './redux/store.js'
 import { Provider } from 'react-redux'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
+import { PersistGate } from 'redux-persist/integration/react'
+import { persistStore } from 'redux-persist'
 
 import { lazy } from 'react'
 
@@ -72,10 +74,14 @@ const router = createBrowserRouter([
   }
 ])
 
+let persistor = persistStore(store)
+
 createRoot(document.getElementById('root')).render(
   <ErrorBoundary fallback={<SomethingWentWrong />}>
     <Provider store={store}>
-      <RouterProvider router={router} />
+      <PersistGate persistor={persistor} >
+        <RouterProvider router={router} />
+      </PersistGate>
     </Provider>
   </ErrorBoundary>
 )
