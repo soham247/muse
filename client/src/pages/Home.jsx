@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
+import {PuffLoader} from 'react-spinners'
 
 function Home() {
     const [blogs, setBlogs] = useState([])
+    const [loading, setLoading] = useState(true)
     const navigate = useNavigate()
     const getAllBlogs = async () => {
         try {
@@ -18,11 +20,20 @@ function Home() {
         } catch (error) {
             navigate('/')     
         }
+        setLoading(false)
     }
 
     useEffect(() => {
         getAllBlogs()
     }, [])
+
+    if(loading) {
+        return (
+            <div className='h-screen flex justify-center items-center'>
+                <PuffLoader color="#006eff" />
+            </div>
+        )
+    }
 
     return (
         <div>

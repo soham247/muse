@@ -41,7 +41,7 @@ function LandingPage() {
                         </div>
                     </div>
                 </section>
-                <section className="py-16text-center">
+                <section className="py-16 text-center">
                     <h2 className="text-3xl font-bold mb-8">Why Choose Us?</h2>
                     <div className="flex flex-wrap justify-center gap-8 px-4 max-w-6xl mx-auto">
                         <div className="p-6 bg-white rounded-lg shadow-md">

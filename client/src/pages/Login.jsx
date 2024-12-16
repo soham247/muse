@@ -8,6 +8,7 @@ import { toast } from 'react-hot-toast'
 function Login() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const [loading, setLoading] = useState(false)
     const [inputs, setInputs] = useState({
         email: '', 
         password: ''
@@ -22,7 +23,7 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+        setLoading(true)
         try {
             const response = await axios.post(
                 `${import.meta.env.VITE_API_URL}/api/v1/user/login`, 
@@ -34,6 +35,7 @@ function Login() {
             if(response.status === 200) {
                 dispatch(login(response.data?.data.user))                
                 toast.success('Login successful')
+                setLoading(false)
                 navigate('/home')
             }
         } catch (error) {
@@ -83,8 +85,9 @@ function Login() {
                 </p>
 
                 <button type="submit"
+                disabled={loading}
                 className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mx-4 rounded'
-                >Login</button>
+                >{loading ? 'Please wait...' : 'Login'}</button>
             </form>
         </div>
     )

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { useSelector } from 'react-redux'
 import { EllipsisVertical, Pencil, Trash } from 'lucide-react'
+import { PuffLoader } from 'react-spinners'
 
 function Profile() {
     const { id } = useParams();
@@ -13,6 +14,7 @@ function Profile() {
     const [openMenu, setOpenMenu] = useState(null); // Track which blog's menu is open
     const navigate = useNavigate();
     const [user, setUser] = useState({});
+    const [loading, setLoading] = useState(true);
 
     const getUser = async () => {
         try {
@@ -30,6 +32,8 @@ function Profile() {
         } catch (error) {
             navigate('*', { replace: true });
         }
+
+        setLoading(false);
     };
 
     const deleteBlog = async (blogId) => {
@@ -51,6 +55,14 @@ function Profile() {
     useEffect(() => {
         getUser();
     }, [id]);
+
+    if(loading) {
+        return (
+            <div className='h-screen flex justify-center items-center'>
+                <PuffLoader color="#006eff" />
+            </div>
+        )
+    }
 
     return (
         <div className="text-center mt-8">
