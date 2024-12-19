@@ -3,6 +3,9 @@ import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 
 const blogSchema = new Schema(
     {
+        thumbnail: {
+          type: String 
+        },
         title: {
             type: String,
             required: true,

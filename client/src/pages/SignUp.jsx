@@ -2,10 +2,16 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast'
+import { useSelector } from 'react-redux'
 
 function SignUp() {
     const navigate = useNavigate()
+    const authenticated = useSelector((state) => state.auth.isLoggedIn)
+    if(authenticated) {
+        navigate('/home')
+    }
     const [loading, setLoading] = useState(false)
+    const [error, setError] = useState('')
     const [inputs, setInputs] = useState({
         name: '',
         username: '',
@@ -28,6 +34,7 @@ function SignUp() {
             return
         }
         setLoading(true)
+        setError('')
         try {
             const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/v1/user/register`, {
                 fullname: inputs.name,
@@ -39,20 +46,17 @@ function SignUp() {
             if(response.status === 201) {
                 toast.success('Registration successful. Please login');
                 navigate('/login')
+            } else if(response.status === 400) {
+                setError(response.data.message)
             } else {
                 toast.error('Registration failed');
             }
         } catch (error) {
+            setError(error.response.data.message)
             toast.error('Registration failed');
-        }        
-
-        setInputs({
-            name: '',
-            username: '',
-            email: '',
-            password: '',
-            confirmPassword: ''
-        })
+        } finally {
+            setLoading(false)
+        }
         
     }
 
@@ -62,7 +66,7 @@ function SignUp() {
         onSubmit={handleSubmit}
         >
             <h2 className="text-center text-2xl font-bold leading-tight my-5">Sign up</h2>
-
+            {error && <p className='text-red-500 mb-2 text-center'>{error}</p>}
             <label htmlFor="name">Name</label>
             <input 
             type="text" 

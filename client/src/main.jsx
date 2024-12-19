@@ -10,6 +10,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 import { persistStore } from 'redux-persist'
 
 import { lazy } from 'react'
+import ChangePassword from './pages/ChangePassword.jsx'
 
 const Login = lazy(() => import('./pages/Login.jsx'))
 const SignUp = lazy(() => import('./pages/SignUp.jsx'))
@@ -36,7 +37,9 @@ const router = createBrowserRouter([
       
       {
         path: 'home',
-        element: <Home />
+        element: <ProtectedRoute>
+          <Home />
+        </ProtectedRoute>
       },
       {
         path: 'blog/:id',
@@ -56,6 +59,12 @@ const router = createBrowserRouter([
         path: 'edit/:id',
         element: <ProtectedRoute>
           <UpdateBlog />
+        </ProtectedRoute>
+      },
+      {
+        path: 'change-password',
+        element: <ProtectedRoute>
+          <ChangePassword />
         </ProtectedRoute>
       },
       {

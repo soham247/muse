@@ -73,12 +73,12 @@ function Profile() {
                 {user.blogs?.length} Blog{user.blogs?.length > 1 && 's'}
             </h2>
             <hr className="mx-20 my-10" />
-            <div className="w-[80%] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="w-[80%] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
                 {user.blogs?.map((blog) => (
-                    <div className="shadow-md p-4 relative" key={blog._id}>
+                    <div className="shadow-md px-4 py-2 relative" key={blog._id}>
                         {options && (
                             <div>
-                                <div className="flex justify-end">
+                                <div className="absolute top-8 right-4 cursor-pointer bg-primary-400/30 backdrop-blur">
                                     <EllipsisVertical
                                         onClick={() =>
                                             setOpenMenu(openMenu === blog._id ? null : blog._id)
@@ -86,7 +86,7 @@ function Profile() {
                                     />
                                 </div>
                                 {openMenu === blog._id && (
-                                    <div className="absolute right-0 mt-4 flex flex-col gap-2 backdrop-blur px-2 py-3 shadow-lg rounded-md text-white/80">
+                                    <div className="absolute right-0 mt-4 flex flex-col gap-2 bg-primary-500/90 backdrop-blur px-2 py-3 shadow-lg rounded-md text-white/80">
                                         <Link
                                             to={`/edit/${blog._id}`}
                                             className="hover:text-blue-500 flex items-center gap-3"
@@ -106,6 +106,15 @@ function Profile() {
                             </div>
                         )}
                         <Link to={`/blog/${blog._id}`}>
+                            {
+                                blog.thumbnail && (
+                                    <img
+                                        src={blog.thumbnail}
+                                        alt={blog.title}
+                                        className="w-full h-48 object-cover mb-4"
+                                    />
+                                )
+                            }
                             <div>
                                 <h3>{blog.title}</h3>
                                 <p>{blog.description}</p>

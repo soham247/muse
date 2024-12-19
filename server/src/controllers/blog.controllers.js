@@ -3,6 +3,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { Blog } from "../models/blog.models.js";
 import { User } from "../models/user.models.js";
+import { deleteFromCloudinary, uploadOnCloudinary } from "../utils/cloudinary.js";
 
 const createBlog = asyncHandler( async(req, res) => {
     const {title, description, content} = req.body
@@ -11,7 +12,22 @@ const createBlog = asyncHandler( async(req, res) => {
         throw new ApiError(400, "All fields are required")
     }
 
+    const imagePath = req.files?.thumbnail?.[0]?.path
+
+    if(!imagePath) {
+        throw new ApiError(400, "Thumbnail is required")
+    }
+
+    let thumbnail;
+    try {
+        thumbnail = await uploadOnCloudinary(imagePath)
+    } catch (error) {
+        console.log(error)
+        throw new ApiError(500, "Something went wrong while uploading image on cloudinary")
+    };
+
     const blog = await Blog.create({
+        thumbnail: thumbnail?.url || "",
         title,
         description,
         content,
@@ -65,9 +81,20 @@ const getBlog = asyncHandler(async(req, res) => {
 const deleteBlog = asyncHandler(async(req, res) => {
 
     const blog = await Blog.findByIdAndDelete(req.params.id)
-
+    
     if(!blog) {
         throw new ApiError(404, "Blog not found")
+    }
+
+    if(blog.thumbnail) {
+        const urlParts = blog.thumbnail.split("/")
+        const publicId = urlParts[urlParts.length - 1].split(".")[0]
+        console.log("Public ID: ", publicId);
+        
+        const deletedImage = await deleteFromCloudinary(publicId)
+        if(!deletedImage) {
+            throw new ApiError(500, "Something went wrong while deleting image from cloudinary")
+        }
     }
 
     return res

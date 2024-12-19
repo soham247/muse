@@ -3,6 +3,7 @@ import { ApiError } from '../utils/ApiError.js';
 import {asyncHandler} from "../utils/asyncHandler.js";
 import { User } from "../models/user.models.js";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt"
 
 const generateAccessAndRefreshToken = async (userId) => {
     try {
@@ -202,11 +203,31 @@ const getUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, user, "User details"))
 })
 
+const changePassword = asyncHandler(async (req, res) => {
+    const {currentPassword, newPassword} = req.body
+    const user = await User.findById(req.user?._id)
+    const isPasswordValid = await user.isPasswordCorrect(currentPassword)
+
+    if(!isPasswordValid) {
+        throw new ApiError(401, "Invalid password")
+    }
+
+    // const hashedPassword = await bcrypt.hash(newPassword, 10)
+    user.password = newPassword
+
+    await user.save({validateBeforeSave: false})
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200, null, "Password changed successfully"))
+})
+
 export {
     registerUser,
     loginUser,
     refreshAccessToken,
     logoutUser,
     getCurrentUser,
-    getUser
+    getUser,
+    changePassword
 }

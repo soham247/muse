@@ -10,6 +10,7 @@ function CreateBlog() {
     const [isSubmitting, setIsSubmitting] = useState(false)
     // const quill = new Quill()
     const [inputs, setInputs] = useState({
+        thumbnail: null,
         title: '',
         description: '',
         content: ''
@@ -22,33 +23,58 @@ function CreateBlog() {
         }))
     }
 
-    const handleSubmit = async(e) => {
-        e.preventDefault()
-        setIsSubmitting(true)
+    const handleFileInput = (e) => {
+        setInputs((prevState) => ({
+            ...prevState,
+            thumbnail: e.target.files[0],
+        }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if(inputs.thumbnail === null || inputs.title === '' || inputs.description === '' || inputs.content === '') {
+            toast.error('All fields are required');
+            return
+        }
+
+        setIsSubmitting(true);       
+        
+        const formData = new FormData();
+        formData.append('thumbnail', inputs.thumbnail);
+        formData.append('title', inputs.title);
+        formData.append('description', inputs.description);
+        formData.append('content', inputs.content);
+    
         try {
             const response = await axios.post(
                 `${import.meta.env.VITE_API_URL}/api/v1/blogs/create`,
-                {
-                    title: inputs.title,
-                    description: inputs.description,
-                    content: inputs.content
-                },
-                {withCredentials: true}
-            )
-            if(response.status === 201) {
-                toast.success('Blog posted successfully')
-                navigate(`/blog/${response.data.data._id}`, {replace: true})
+                formData,
+                { withCredentials: true, headers: { 'Content-Type': 'multipart/form-data' } }
+            );
+            if (response.status === 201) {
+                toast.success('Blog posted successfully');
+                navigate(`/blog/${response.data.data._id}`, { replace: true });
             }
         } catch (error) {
-            toast.error('Failed to post blog')
+            toast.error(error.response?.data?.message || 'Failed to post blog');
         } finally {
-            setIsSubmitting(false)
+            setIsSubmitting(false);
         }
-    }
+    };
+    
 
     return (
         <div>
-            <form onSubmit={handleSubmit} className='w-[80%] mx-auto flex flex-col gap-4 mt-5 text-white'>
+            <form onSubmit={handleSubmit} className='w-[90%] md:w-[80%] mx-auto flex flex-col gap-4 my-5 text-white'>
+                <label htmlFor="thumbnail">Thumbnail</label>
+                <input type="file"
+                name='thumbnail'
+                className='py-2 px-4 mb-4 border rounded-md focus:outline-none focus:ring-1 bg-transparent'
+                accept='image/*'
+                required
+                id='thumbnail'
+                onChange={handleFileInput}
+                />
                 <label htmlFor="title">Title</label>
                 <input 
                 className='py-2 px-4 mb-4 border rounded-md focus:outline-none focus:ring-1 bg-transparent'

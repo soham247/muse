@@ -41,9 +41,14 @@ function Home() {
                 { blogs? 
                  blogs.map((blog) => (
                     <Link to={`/blog/${blog._id}`} key={blog._id}>
-                        <div className='p-4 shadow-md my-4'>
-                            <h1 className='text-2xl font-bold'>{blog.title}</h1>
-                            <p className='text-sm text-right mr-3'>by {blog.author?.fullname}</p>
+                        <div className='px-4 pb-3 shadow-md my-4'>
+                            {
+                                blog.thumbnail && (
+                                    <img src={blog.thumbnail} alt={blog.title} className='aspect-[16/9] w-full object-cover' />
+                                )
+                            }
+                            <h1 className='text-2xl font-bold mt-2'>{blog.title}</h1>
+                            <p className='text-sm text-right my-1 mr-3 italic'>by {blog.author?.fullname}</p>
                             <p>{blog.description}</p>
                         </div>
                     </Link>

@@ -40,11 +40,16 @@ function Blog() {
 
     return (
         <div>
-            <div className='text-center mt-5'>
+            <div className='text-center mt-1 mb-3'>
+                
                 <h1 className='text-3xl font-bold'>{blog.title}</h1>
                 <p className='py-2'>Author: <Link to={`/profile/${blog.author?._id}`} className='text-blue-500'>{blog.author?.fullname}</Link></p>
                 <p className='text-sm italic'>last updated: {new Date(blog.updatedAt).toDateString()}</p>
-                <p className='mt-9 text-left px-4'>{blog.content}</p>
+                {
+                    blog.thumbnail && 
+                    <img src={blog.thumbnail} alt="thumbnail" className='w-[90%] md:w-1/2 mt-1 mx-auto' />
+                }
+                <p className='mt-9 text-left px-4 md:px-8'>{blog.content}</p>
             </div>
         </div>
     )

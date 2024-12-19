@@ -1,14 +1,22 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../redux/store'
 import { toast } from 'react-hot-toast'
 
 function Login() {
     const navigate = useNavigate()
+    const authenticated = useSelector((state) => state.auth.isLoggedIn)
+    useEffect(() => {
+        if (authenticated) {
+            navigate('/home');
+        }
+    }, [authenticated, navigate]);
+
     const dispatch = useDispatch()
     const [loading, setLoading] = useState(false)
+    const [error, setError] = useState('')
     const [inputs, setInputs] = useState({
         email: '', 
         password: ''
@@ -24,6 +32,7 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true)
+        setError('')
         try {
             const response = await axios.post(
                 `${import.meta.env.VITE_API_URL}/api/v1/user/login`, 
@@ -37,9 +46,17 @@ function Login() {
                 toast.success('Login successful')
                 setLoading(false)
                 navigate('/home')
+            } else if(response.status === 404) {
+                setError("User not found")
+            } else if(response.status === 401) {
+                setError("Incorrect password")
+            } else {
+                toast.error('Login failed')
             }
         } catch (error) {
             toast.error('Login failed')
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -49,7 +66,7 @@ function Login() {
             onSubmit={handleSubmit}
             >
                 <h2 className="text-center text-2xl font-bold leading-tight my-5">Sign in to your account</h2>
-
+                {error && <p className='text-red-500 text-center mb-2'>{error}</p>}
                 <label htmlFor="email">Email</label>
                 <input 
                 type="email" 

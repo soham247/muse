@@ -8,7 +8,7 @@ function DropdownMenu({userId}) {
             <Link to={`/profile/${userId}`} className='mt-2 hover:text-blue-700'>Profile</Link>
 
             <Link to={'/create-blog'} className='hover:text-blue-700'>Create blog</Link>
-            <Link to={'/create-blog'} className='hover:text-blue-700'>Change password</Link>
+            <Link to={'/change-password'} className='hover:text-blue-700'>Change password</Link>
             <LogoutBtn />
         </div>
     )

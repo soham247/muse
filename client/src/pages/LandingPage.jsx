@@ -1,9 +1,15 @@
 import React from 'react'
 import Footer from '../components/Footer.jsx'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { LogIn } from 'lucide-react'
+import { useSelector } from 'react-redux'
 
 function LandingPage() {
+    const navigate = useNavigate()
+    const authenticated = useSelector((state) => state.auth.isLoggedIn)
+    if(authenticated) {
+        navigate('/home')
+    }
 
     return (
         <div>
