@@ -27,10 +27,6 @@ const userSchema = new Schema(
             type: String,
             required: [true, "Password is required"]
         },
-        blogs: {
-            type: [Schema.Types.ObjectId],
-            ref: "Blog"
-        },
         refreshToken: {
             type: String
         }

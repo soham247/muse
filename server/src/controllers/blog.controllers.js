@@ -2,7 +2,6 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { Blog } from "../models/blog.models.js";
-import { User } from "../models/user.models.js";
 import { deleteFromCloudinary, uploadOnCloudinary } from "../utils/cloudinary.js";
 
 const createBlog = asyncHandler( async(req, res) => {
@@ -38,10 +37,6 @@ const createBlog = asyncHandler( async(req, res) => {
         throw new ApiError(500, "Something went wrong while creating blog")
     }
 
-    await User.findByIdAndUpdate(req.user._id, {
-        $push: { blogs: blog._id },
-    });
-
     return res
     .status(201)
     .json(new ApiResponse(201, blog, "Blog created successfully"))
@@ -56,6 +51,19 @@ const getBlogs = asyncHandler(async(req, res) => {
     .skip((page - 1) * limit)
     .limit(limit)
     .populate("author", "fullname _id")
+
+    if(!blogs) {
+        throw new ApiError(500, "Something went wrong while fetching blogs")
+    }
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200, blogs, "Blogs fetched successfully"))
+})
+
+const getBlogsOfUser = asyncHandler(async(req, res) => {
+    const authorId = req.params.id
+    const blogs = await Blog.find({author: authorId}).sort({ createdAt: -1})
 
     if(!blogs) {
         throw new ApiError(500, "Something went wrong while fetching blogs")
@@ -115,23 +123,21 @@ const updateBlog = asyncHandler(async(req, res) => {
 })
 
 const searchBlogs = asyncHandler(async (req, res) => {
-    // const page = parseInt(req.query.page) || 1;
-    // const limit = parseInt(req.query.limit) || 10;
-    // const key = req.query.key || "demo";
-    const {key, page, limit} = req.query
-    console.log("Search Term: ", key);  // Log the search term
+    const key = req.query.key
+    const page = req.query.page || 1
+    const limit = req.query.limit || 10
+
+    const regex = new RegExp(key, "i")
 
     const blogs = await Blog.find({
         $or: [
-            { title: { $regex: key, $options: "$i" } },
-            { description: { $regex: key, $options: "$i" } },
-            { content: { $regex: key, $options: "$i" } },
+            { title: { $regex: regex } },
+            { description: { $regex: regex } },
         ]
-    })
-        .sort({ createdAt: -1 })
-        .skip((page - 1) * limit)
-        .limit(limit)
-        .populate("author")
+    }).skip((page - 1) * limit)
+    .limit(limit)
+    .populate("author", "fullname _id")
+    
 
     if (!blogs) {
         return res.status(500).json(new ApiResponse(500, null, "Failed to fetch blogs."));
@@ -146,6 +152,7 @@ const searchBlogs = asyncHandler(async (req, res) => {
 export {
     createBlog,
     getBlogs,
+    getBlogsOfUser,
     getBlog,
     deleteBlog,
     updateBlog,

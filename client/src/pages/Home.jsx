@@ -47,9 +47,11 @@ function Home() {
                                     <img src={blog.thumbnail} alt={blog.title} className='aspect-[16/9] w-full object-cover' />
                                 )
                             }
-                            <h1 className='text-2xl font-bold mt-2'>{blog.title}</h1>
+                            <h1 className='text-2xl font-bold mt-2 text-center'>{blog.title}</h1>
                             <p className='text-sm text-right my-1 mr-3 italic'>by {blog.author?.fullname}</p>
-                            <p>{blog.description}</p>
+                            <p className='text-white/80 text-center mt-2'>{blog.description}</p>
+                            <p className="mt-2 text-right text-xs italic text-white/50">{new Date(blog.createdAt).toLocaleDateString().replaceAll("/", " . ")}</p>
+
                         </div>
                     </Link>
                  ))

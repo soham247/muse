@@ -42,7 +42,7 @@ function Login() {
                 }, {withCredentials: true}
             )
             if(response.status === 200) {
-                dispatch(login(response.data?.data.user))                
+                dispatch(login(response.data?.data.user._id))                
                 toast.success('Login successful')
                 setLoading(false)
                 navigate('/home')

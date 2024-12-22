@@ -47,9 +47,9 @@ function Blog() {
                 <p className='text-sm italic'>last updated: {new Date(blog.updatedAt).toDateString()}</p>
                 {
                     blog.thumbnail && 
-                    <img src={blog.thumbnail} alt="thumbnail" className='w-[90%] md:w-1/2 mt-1 mx-auto' />
+                    <img src={blog.thumbnail} alt="thumbnail" className='w-[90%] md:w-1/2 aspect-[16/9] mt-1 mx-auto' />
                 }
-                <p className='mt-9 text-left px-4 md:px-8'>{blog.content}</p>
+                <p className='mt-9 text-left px-4 md:px-8 lg:px-12'>{blog.content}</p>
             </div>
         </div>
     )

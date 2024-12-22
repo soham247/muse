@@ -3,7 +3,6 @@ import { ApiError } from '../utils/ApiError.js';
 import {asyncHandler} from "../utils/asyncHandler.js";
 import { User } from "../models/user.models.js";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt"
 
 const generateAccessAndRefreshToken = async (userId) => {
     try {
@@ -180,7 +179,7 @@ const logoutUser = asyncHandler( async (req, res) => {
 
 const getCurrentUser = asyncHandler(async (req, res) => {
 
-    const user = await User.findById(req.user._id).select("-password -refreshToken").populate("blogs")
+    const user = await User.findById(req.user._id).select("-password -refreshToken")
 
     if(!user) {
         throw new ApiError(404, "User not found")
@@ -192,7 +191,7 @@ const getCurrentUser = asyncHandler(async (req, res) => {
 });
 
 const getUser = asyncHandler(async (req, res) => {
-    const user = await User.findById(req.params.id).select("-password -refreshToken -email -updatedAt").populate("blogs")
+    const user = await User.findById(req.params.id).select("-password -refreshToken -email -updatedAt")
 
     if(!user) {
         throw new ApiError(404, "User not found")
@@ -212,7 +211,6 @@ const changePassword = asyncHandler(async (req, res) => {
         throw new ApiError(401, "Invalid password")
     }
 
-    // const hashedPassword = await bcrypt.hash(newPassword, 10)
     user.password = newPassword
 
     await user.save({validateBeforeSave: false})

@@ -71,7 +71,7 @@ function ChangePassword() {
                     </div>
                 ))}
                 {error && <p className='text-red-500'>{error}</p>}
-                <button type="submit" className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mx-4 lg:mx-16 my-3 rounded'>Change Password</button>
+                <button type="submit" className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mx-4 lg:mx-16 my-3 rounded'>{ loading ? 'Please wait...' : 'Change Password'}</button>
             </form>
         </div>
     )
