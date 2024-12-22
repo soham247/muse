@@ -38,23 +38,23 @@ function SearchedContent() {
           <PuffLoader color="#006eff" />
         </div>
       ) : (
-        <div className="w-[90%] md:w-[80%] mx-auto">
+        <div className="w-[95%] md:w-[80%] mx-auto">
           {blogs
             ? blogs.map((blog) => (
                 <Link to={`/blog/${blog._id}`} key={blog._id}>
-                  <div className="px-4 pb-3 shadow-md my-4 flex justify-around h-[25vh]">
+                  <div className="px-4 pb-3 shadow-md my-4 flex gap-1 justify-around md:h-[25vh]">
                     {blog.thumbnail && (
                       <img
                         src={blog.thumbnail}
                         alt={blog.title}
-                        className="w-1/3 h-full object-cover"
+                        className="w-2/5 md:w-1/3 md:object-cover"
                       />
                     )}
                     <div>
                     <h1 className="text-2xl font-bold mt-2 text-center">
                       {blog.title}
                     </h1>
-                    <p className="text-sm my-1 mr-3 italic">
+                    <p className="text-sm my-1 mr-3 italic text-gray-300">
                       by {blog.author?.fullname}
                     </p>
                     <p className="mt-5 text-xs italic text-white/50">Last updated on {new Date(blog.createdAt)
