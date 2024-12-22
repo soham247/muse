@@ -6,7 +6,7 @@ const app = express();
 
 app.use(
     cors({
-        origin: 'https://muse-app-tgah.onrender.com',
+        origin: process.env.CORS_ORIGIN,
         credentials: true
     })
 );
