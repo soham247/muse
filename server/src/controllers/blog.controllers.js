@@ -12,15 +12,15 @@ const createBlog = asyncHandler( async(req, res) => {
         throw new ApiError(400, "All fields are required")
     }
 
-    const imagePath = req.files?.thumbnail?.[0]?.path
+    const file = req.files?.thumbnail?.[0]
 
-    if(!imagePath) {
+    if(!file) {
         throw new ApiError(400, "Thumbnail is required")
     }
 
     let thumbnail;
     try {
-        thumbnail = await uploadOnCloudinary(imagePath)
+        thumbnail = await uploadOnCloudinary(file.buffer)
     } catch (error) {
         console.log(error)
         throw new ApiError(500, "Something went wrong while uploading image on cloudinary")
@@ -89,7 +89,6 @@ const deleteBlog = asyncHandler(async(req, res) => {
     if(blog.thumbnail) {
         const urlParts = blog.thumbnail.split("/")
         const publicId = urlParts[urlParts.length - 1].split(".")[0]
-        console.log("Public ID: ", publicId);
         
         const deletedImage = await deleteFromCloudinary(publicId)
         if(!deletedImage) {
