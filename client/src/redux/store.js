@@ -1,6 +1,5 @@
 import { combineReducers, configureStore, createSlice } from '@reduxjs/toolkit'
 import storage from "redux-persist/lib/storage"
-// import {persistReducer} from "redux-persist"
 import { persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
 
 const authSlice = createSlice({
