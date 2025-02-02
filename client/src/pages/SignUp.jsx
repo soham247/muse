@@ -48,14 +48,15 @@ function SignUp() {
             if(response.status === 201) {
                 toast.success('Registration successful. Please login');
                 navigate('/login')
-            } else if(response.status === 400) {
-                setError(response.data.message)
-            } else {
-                toast.error('Registration failed');
             }
         } catch (error) {
-            setError(error.response.data.message)
-            toast.error('Registration failed');
+            if(error.response.status === 400) {
+                setError("User already exists")
+            }
+            else {
+                setError("Something went wrong")
+                toast.error('Registration failed');
+            }
         } finally {
             setLoading(false)
         }
@@ -78,7 +79,7 @@ function SignUp() {
                     </div>
 
                     {error && (
-                        <div className='p-3 text-sm text-red-500 dark:text-red-400 bg-red-100 dark:bg-red-900/30 rounded-lg'>
+                        <div className='p-3 text-sm text-red-500 dark:text-red-400 text-center rounded-lg'>
                             {error}
                         </div>
                     )}

@@ -47,15 +47,15 @@ function Login() {
                 toast.success('Login successful')
                 setLoading(false)
                 navigate('/home')
-            } else if(response.status === 404) {
+            }
+        } catch (error) {           
+            if(error.status === 404) {
                 setError("User not found")
-            } else if(response.status === 401) {
+            } else if(error.status === 401) {
                 setError("Incorrect password")
             } else {
                 toast.error('Login failed')
             }
-        } catch (error) {
-            toast.error('Login failed')
         } finally {
             setLoading(false)
         }
@@ -78,7 +78,7 @@ function Login() {
                     </div>
 
                     {error && (
-                        <div className='p-3 text-sm text-red-500 dark:text-red-400 bg-red-100 dark:bg-red-900/30 rounded-lg'>
+                        <div className='p-3 text-sm text-red-500 dark:text-red-400 text-center rounded-lg'>
                             {error}
                         </div>
                     )}

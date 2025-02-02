@@ -11,6 +11,7 @@ import { persistStore } from 'redux-persist';
 import { lazy, Suspense } from 'react';
 import ChangePassword from './pages/ChangePassword.jsx';
 import SearchedContent from './pages/SearchedContent.jsx';
+import { Toaster } from 'react-hot-toast';
 
 const Login = lazy(() => import('./pages/Login.jsx'));
 const SignUp = lazy(() => import('./pages/SignUp.jsx'));
@@ -87,6 +88,24 @@ createRoot(document.getElementById('root')).render(
     <Provider store={store}>
       <PersistGate persistor={persistor} loading={<div>Loading...</div>}>
         <Suspense fallback={<div>Loading...</div>}>
+        <Toaster
+        position='top-right'
+        reverseOrder={false}
+        toastOptions={{
+          success: {
+            style: {
+              background: 'green',
+              color: 'white'
+            }
+          },
+          error: {
+            style: {
+              background: 'red',
+              color: 'white'
+            }
+          }
+        }}
+        />
           <RouterProvider router={router} />
         </Suspense>
       </PersistGate>
