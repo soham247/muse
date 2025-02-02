@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "An AI powered modern blogging website.",
   "type": "module",
-  "main": "src/index.js",
+  "main": "api/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "build": "npm run build",
+    "dev": "nodemon ./api/index.js"
   },
   "keywords": [
     "nodejs",

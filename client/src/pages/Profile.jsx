@@ -7,6 +7,14 @@ import { EllipsisVertical, Pencil, Trash, Calendar, User, Clock, Book } from "lu
 import { PuffLoader } from "react-spinners";
 
 const BlogCard = ({ blog, options, openMenu, setOpenMenu, onDelete }) => {
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    await onDelete(blog._id);
+    setIsDeleting(false);
+  };
+
   return (
     <div className="bg-white/5 backdrop-blur-lg rounded-xl border border-white/10 overflow-hidden group relative">
       {options && (
@@ -28,18 +36,32 @@ const BlogCard = ({ blog, options, openMenu, setOpenMenu, onDelete }) => {
                 <span>Edit Blog</span>
               </Link>
               <button
-                onClick={() => onDelete(blog._id)}
+                onClick={handleDelete}
+                disabled={isDeleting}
                 className="w-full flex items-center gap-2 px-4 py-3 text-red-400 hover:bg-white/5 transition-colors duration-300"
               >
-                <Trash className="w-4 h-4" />
-                <span>Delete Blog</span>
+                {isDeleting ? (
+                  <PuffLoader color="#F87171" size={16} />
+                ) : (
+                  <Trash className="w-4 h-4" />
+                )}
+                <span>{isDeleting ? "Deleting..." : "Delete Blog"}</span>
               </button>
             </div>
           )}
         </div>
       )}
       
-      <Link to={`/blog/${blog._id}`}>
+      {isDeleting && (
+        <div className="absolute inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-20">
+          <div className="text-center">
+            <PuffLoader color="#3B82F6" size={40} />
+            <p className="mt-4 text-sm text-gray-300">Deleting blog...</p>
+          </div>
+        </div>
+      )}
+      
+      <Link to={`/blog/${blog._id}`} className={isDeleting ? 'pointer-events-none' : ''}>
         {blog.thumbnail && (
           <div className="relative h-48 overflow-hidden">
             <img
@@ -115,11 +137,12 @@ function Profile() {
       );
 
       if (response.status === 200) {
+        setOpenMenu(null); // Close the menu after successful deletion
         toast.success("Blog deleted successfully");
         setBlogs(blogs.filter(blog => blog._id !== blogId));
       }
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error("Something went wrong while deleting the blog");
     }
   };
 
@@ -139,7 +162,6 @@ function Profile() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black py-12">
       <div className="container mx-auto px-4">
-        {/* Profile Header */}
         <div className="max-w-2xl mx-auto text-center mb-16">
           <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
             <User className="w-12 h-12 text-white" />
@@ -167,7 +189,6 @@ function Profile() {
           </div>
         </div>
 
-        {/* Blog Grid */}
         {blogs?.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {blogs.map((blog) => (

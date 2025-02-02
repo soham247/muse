@@ -18,8 +18,7 @@ const LandingPage = lazy(() => import('./pages/LandingPage.jsx'));
 const Home = lazy(() => import('./pages/Home.jsx'));
 const Blog = lazy(() => import('./components/blog/Blog.jsx'));
 const Profile = lazy(() => import('./pages/Profile.jsx'));
-const CreateBlog = lazy(() => import('./components/blog/CreateBlog.jsx'));
-const UpdateBlog = lazy(() => import('./components/blog/UpdateBlog.jsx'));
+const BlogForm = lazy(() => import('./components/blog/BlogForm.jsx'));
 const Error404 = lazy(() => import('./components/errors/Error404.jsx'));
 const SomethingWentWrong = lazy(() =>
   import('./components/errors/SomethingWentWrong.jsx')
@@ -54,7 +53,7 @@ const router = createBrowserRouter([
         path: 'create-blog',
         element: (
           <ProtectedRoute>
-            <CreateBlog />
+            <BlogForm />
           </ProtectedRoute>
         )
       },
@@ -62,7 +61,7 @@ const router = createBrowserRouter([
         path: 'edit/:id',
         element: (
           <ProtectedRoute>
-            <UpdateBlog />
+            <BlogForm />
           </ProtectedRoute>
         )
       },

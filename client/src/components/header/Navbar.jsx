@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { CircleUser, Search } from "lucide-react";
@@ -12,6 +12,20 @@ function Navbar() {
   const [search, setSearch] = useState("");
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const dropdownRef = useRef(null);
+
+  // Handle click outside dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   // Handle scroll behavior
   useEffect(() => {
     const controlNavbar = () => {
@@ -26,10 +40,7 @@ function Navbar() {
     };
 
     window.addEventListener("scroll", controlNavbar);
-
-    return () => {
-      window.removeEventListener("scroll", controlNavbar);
-    };
+    return () => window.removeEventListener("scroll", controlNavbar);
   }, [lastScrollY]);
 
   const handleSearch = (e) => {
@@ -41,7 +52,7 @@ function Navbar() {
 
   return (
     <nav
-      className={`fixed w-full top-0 z-50 transition-transform duration-300 ${
+      className={`fixed w-full top-0 z-40 transition-transform duration-300 ${
         isVisible ? "translate-y-0" : "-translate-y-full"
       }`}
     >
@@ -76,31 +87,35 @@ function Navbar() {
                 </form>
               )}
             </div>
-            {isLoggedIn && (
-              <>
-                <NavLink
-                  to="/home"
-                  className={({ isActive }) =>
-                    isActive
-                      ? "text-blue-500 px-4 py-2 font-semibold hidden md:block"
-                      : "px-4 py-2 text-white hover:text-blue-500 transition-colors duration-300 font-semibold hidden md:block"
-                  }
-                >
-                  Home
-                </NavLink>
 
-                <NavLink
-                  to="/create-blog"
-                  className={({ isActive }) =>
-                    isActive
-                      ? "text-blue-500 px-4 py-2 font-semibold hidden md:block"
-                      : "px-4 py-2 text-white hover:text-blue-500 transition-colors duration-300 font-semibold hidden md:block"
-                  }
-                >
-                  Create
-                </NavLink>
-              </>
-            )}
+            {/* Navigation Links */}
+            <div className="hidden md:flex items-center space-x-4">
+              {isLoggedIn && (
+                <>
+                  <NavLink
+                    to="/home"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "text-blue-500 px-4 py-2 font-semibold"
+                        : "px-4 py-2 text-white hover:text-blue-500 transition-colors duration-300 font-semibold"
+                    }
+                  >
+                    Home
+                  </NavLink>
+
+                  <NavLink
+                    to="/create-blog"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "text-blue-500 px-4 py-2 font-semibold"
+                        : "px-4 py-2 text-white hover:text-blue-500 transition-colors duration-300 font-semibold"
+                    }
+                  >
+                    Create
+                  </NavLink>
+                </>
+              )}
+            </div>
 
             {/* Right Side Navigation */}
             <div className="flex flex-wrap items-center space-x-4">
@@ -112,16 +127,20 @@ function Navbar() {
                   Sign In
                 </Link>
               ) : (
-                <div className="relative">
+                <div className="relative" ref={dropdownRef}>
                   <button
                     onClick={() => setDropdown(!dropdown)}
-                    onBlur={() => setTimeout(() => setDropdown(false), 200)}
                     className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-white/5 transition-colors duration-300"
                   >
                     <CircleUser className="w-6 h-6 text-gray-300" />
                   </button>
 
-                  {dropdown && <DropdownMenu userId={user} />}
+                  {dropdown && (
+                    <DropdownMenu 
+                      userId={user} 
+                      onClose={() => setDropdown(false)}
+                    />
+                  )}
                 </div>
               )}
             </div>
