@@ -119,15 +119,7 @@ function Navbar() {
 
             {/* Right Side Navigation */}
             <div className="flex flex-wrap items-center space-x-4">
-              {!isLoggedIn ? (
-                <Link
-                  to="/login"
-                  className="px-3 py-2 bg-blue-500 text-white text-sm md:text-base rounded-lg hover:bg-blue-600 transition-colors duration-300 whitespace-nowrap"
-                >
-                  Sign In
-                </Link>
-              ) : (
-                <div className="relative" ref={dropdownRef}>
+                { isLoggedIn &&<div className="relative" ref={dropdownRef}>
                   <button
                     onClick={() => setDropdown(!dropdown)}
                     className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-white/5 transition-colors duration-300"
@@ -141,8 +133,7 @@ function Navbar() {
                       onClose={() => setDropdown(false)}
                     />
                   )}
-                </div>
-              )}
+                </div>}
             </div>
           </div>
         </div>
