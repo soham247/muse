@@ -80,7 +80,7 @@ function Home() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-gray-900 to-black">
         <PuffLoader color="#3B82F6" />
-        <p className="mt-4 text-gray-400">Loading amazing content...</p>
+        <p className="mt-4 text-gray-400">Cooking amazing content...</p>
       </div>
     );
   }

@@ -12,6 +12,7 @@ import { lazy, Suspense } from 'react';
 import ChangePassword from './pages/ChangePassword.jsx';
 import SearchedContent from './pages/SearchedContent.jsx';
 import { Toaster } from 'react-hot-toast';
+import LoadingScreen from './components/LoadingScreen.jsx';
 
 const Login = lazy(() => import('./pages/Login.jsx'));
 const SignUp = lazy(() => import('./pages/SignUp.jsx'));
@@ -86,8 +87,8 @@ let persistor = persistStore(store);
 createRoot(document.getElementById('root')).render(
   <ErrorBoundary fallback={<SomethingWentWrong />}>
     <Provider store={store}>
-      <PersistGate persistor={persistor} loading={<div>Loading...</div>}>
-        <Suspense fallback={<div>Loading...</div>}>
+      <PersistGate persistor={persistor} loading={<LoadingScreen />}>
+        <Suspense fallback={<LoadingScreen />}>
         <Toaster
         position='top-right'
         reverseOrder={false}
