@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.4.0",
-    "axios": "^1.7.9",
+    "axios": "^1.13.5",
     "date-fns": "^4.1.0",
     "framer-motion": "^11.18.0",
     "lucide-react": "^0.468.0",
